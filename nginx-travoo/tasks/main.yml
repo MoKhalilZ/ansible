@@ -1,0 +1,6 @@
+---
+# tasks file for nginx-travoo
+- name: Include prerequests.yml packages
+  import_tasks: prerequests.yml
+- name: Include install_nginx_php.yml tasks
+  import_tasks: install_nginx_php.yml

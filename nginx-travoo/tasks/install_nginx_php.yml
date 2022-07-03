@@ -1,0 +1,46 @@
+---
+- name: Install Nginx
+  yum:
+    name: nginx
+    state: latest
+- name: Configure Nginx
+  template:
+    src: ../templates/nginx.yml.j2
+    dest: /etc/nginx/nginx.conf
+- name: Install php 7.3.x
+  yum:
+    name:
+      - php
+      - php-bcmath
+      - php-json
+      - php-mbstring
+      - php-mcrypt
+      - php-gd
+      - php-zip
+      - php-pdo
+      - php-xml
+      - php-cli
+      - php-common
+      - php-pecl-zip
+      - php-fpm
+      - php-mysql
+    enablerepo: "remi-php73"
+- name: Configure PHP-FPM
+  template:
+    src: ../templates/php-fpm.yml.j2
+    dest: /etc/php-fpm.d/www.conf
+- name: Create /run/php-fpm directory
+  file:
+    path: /run/php-fpm
+    state: directory
+    mode: '0755'
+    owner: "{{ nginx_user }}"
+    group: "{{ nginx_user }}"
+  notify:
+    - start php-fpm
+- name: Create {{ domain }} nginx configuration
+  template:
+    src: ../templates/domain-conf.yml.j2
+    dest: /etc/nginx/conf.d/{{ domain }}.conf
+  notify:
+    - start nginx

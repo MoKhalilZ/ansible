@@ -1,0 +1,5 @@
+---
+# defaults file for nginx-travoo
+nginx_user: nginx
+domain: example.com
+project_path: /var/www/example

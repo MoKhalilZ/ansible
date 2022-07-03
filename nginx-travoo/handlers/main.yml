@@ -1,0 +1,12 @@
+---
+# handlers file for nginx-travoo
+- name: start nginx
+  systemd:
+    name: nginx
+    enabled: true
+    state: started
+- name: start php-fpm
+  systemd:
+    name: php-fpm
+    enabled: true
+    state: started
